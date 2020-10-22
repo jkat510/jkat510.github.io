@@ -1,0 +1,163 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8' />
+  <title>California Eelgrass</title>
+  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+  <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.js'></script>
+  <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.css' rel='stylesheet' />
+  <style>
+    body { margin:0; padding:0; }
+    #map { position:absolute; top:0; bottom:0; width:100%; }
+#fly2 {
+display: block;
+position: absolute;
+top: 5px;
+left: 5px;
+margin: 0px auto;
+width: 100px;
+height: 40px;
+padding: 10px;
+border: none;
+border-radius: 3px;
+font-size: 12px;
+text-align: center;
+color: #fff;
+background: #000;
+}
+
+#fly {
+display: block;
+position: absolute;
+top: 5px;
+left: 110px;
+margin: 0px auto;
+width: 100px;
+height: 40px;
+padding: 10px;
+border: none;
+border-radius: 3px;
+font-size: 12px;
+text-align: center;
+color: #fff;
+background: #000;
+}  
+
+#fly3 {
+display: block;
+position: absolute;
+top: 5px;
+left: 215px;
+margin: 0px auto;
+width: 100px;
+height: 40px;
+padding: 10px;
+border: none;
+border-radius: 3px;
+font-size: 12px;
+text-align: center;
+color: #fff;
+background: #000;
+}  
+
+#fly4 {
+display: block;
+position: absolute;
+top: 5px;
+left: 320px;
+margin: 0px auto;
+width: 100px;
+height: 40px;
+padding: 10px;
+border: none;
+border-radius: 3px;
+font-size: 12px;
+text-align: center;
+color: #fff;
+background: #000;
+}  
+
+</style>
+</head>
+
+
+<body>
+<div id='map'></div>
+<button id="fly">Tomales Bay</button>
+<button id="fly2">Humboldt Bay</button>
+<button id="fly3">San Francisco Bay</button>
+<button id="fly4">Morro Bay</button>
+
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoiamthdGhhbiIsImEiOiJjazczbHNwdXMwMGx0M2txeGJmaHljY2JzIn0.OjusFjEpOKky0bUme8FdEg';
+const map = new mapboxgl.Map({
+  container: 'map',
+  style: 'mapbox://styles/jkathan/ck73tulh70cwr1ipqzz3fjirp/draft',
+  center: [-120, 38],
+  zoom: 6.0,
+ attributionControl: false
+});
+
+// Add zoom and rotation controls to the map.
+map.addControl(new mapboxgl.NavigationControl());
+
+// Disable scroll zooming
+map.scrollZoom.disable();
+
+document.getElementById('fly').addEventListener('click', function() {
+map.flyTo({
+center: [-122.9,38.15],
+zoom: 11,
+essential: true // this animation is considered essential with respect to prefers-reduced-motion
+});
+});
+
+document.getElementById('fly2').addEventListener('click', function() {
+map.flyTo({
+center: [-124.22,40.78],
+zoom: 10,
+essential: true // this animation is considered essential with respect to prefers-reduced-motion	
+});
+});
+
+document.getElementById('fly3').addEventListener('click', function() {
+map.flyTo({
+center: [-122.37,37.86],
+zoom: 9,
+essential: true // this animation is considered essential with respect to prefers-reduced-motion	
+});
+});
+
+document.getElementById('fly4').addEventListener('click', function() {
+map.flyTo({
+center: [-120.85,35.34],
+zoom: 12,
+essential: true // this animation is considered essential with respect to prefers-reduced-motion	
+});
+});
+
+
+map.on('click', function(e) {
+  var features = map.queryRenderedFeatures(e.point, {
+    layers: ['eelgrass-points1'] // replace this with the name of the layer
+  });
+
+  if (!features.length) {
+    return;
+  }
+
+  var feature = features[0];
+
+  var popup = new mapboxgl.Popup({ offset: [0, -15] })
+    .setLngLat(feature.geometry.coordinates)
+    .setHTML('<h3>' + feature.properties.title + '</h3><p>' + feature.properties.desc +'</p><p>')
+    .addTo(map);
+
+});
+
+map.addControl(new mapboxgl.AttributionControl({customAttribution: "Source: PSFMC, CDFW."}))
+
+</script>
+
+</body>
+</html>
